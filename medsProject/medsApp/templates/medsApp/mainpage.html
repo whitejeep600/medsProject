@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'medsApp/stylesheet.css' %}"{% now "U" %}>
+    <meta charset="UTF-8">
+    <title>Main page of the Lorem browser</title>
+</head>
+<body>
+
+
+<div class="filtrationDiv">
+
+    <div class="namePrompt"> medicine name</div>
+    <div class="producerPrompt"> producer</div>
+    <div class="limitPrompt"> limit group</div>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" id="medName" class="medNameInput" name="name">
+
+        <input type="text" class="producerInput" name="producer">
+        <input type="text" class="limitGroupInput" name="limit group">
+        <button type="submit" class="filterButton">filter
+        </button>
+    </form>
+
+</div>
+
+<div class="tableDiv">
+
+    <table>
+        <tr>
+            <th>
+                <button class="headerSortButton">some column</button>
+            </th>
+            <th>
+                <button class="headerSortButton">some column</button>
+            </th>
+            <th>
+                <button class="headerSortButton">some column</button>
+            </th>
+        </tr>
+        <tr>
+            <td>some value</td>
+            <td>some value</td>
+            <td>some value</td>
+        </tr>
+        <tr>
+            <td>some value</td>
+            <td>some value</td>
+            <td>some value</td>
+        </tr>
+    </table>
+
+</div>
+
+<div class="pagingDiv">
+    <div class="prevPageLink">
+        <a href="{% url 'index' %}"> previous page</a>
+    </div>
+
+    <div class="currentPage">
+        current page: 34
+    </div>
+
+
+    <div class="nextPageLink">
+        <a href="{% url 'index' %}"> next page</a>
+    </div>
+</div>
+
+</body>
+</html>
+
