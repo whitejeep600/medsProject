@@ -1,0 +1,27 @@
+nazwa, postac i dawka - rozdzielone przecinkami, sparsowac.
+LP niepotrzebne, termin i okres rowniez
+
+A1 A2 A3 B C
+LP, Termin, Okres
+A, F, G
+
+MARZEC
+
+porozbijać tę kolumnę na 3
+
+w A
+Nazwa postać i dawka
+
+B i C
+Nazwa postać i dawka leku
+
+D i E
+Nazwa i postać leku
+natomiast rowniez zawiera dawke
+
+
+B i C nie ma ceny detalicznej oraz Pozarejestrecajnych.
+Natomiast
+Zakres wskazań objętych refundacją -> Oznaczenie załącznika zawierającego zakres wskazań objętych refundacją  wg ICD 10
+
+POSTGRES NONO
