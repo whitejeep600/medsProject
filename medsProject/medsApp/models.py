@@ -16,7 +16,7 @@ class Drug(models.Model):
     # substance
     active_substance = models.CharField(max_length=100)
 
-    date = models.DateField()
+    date = models.DateTimeField()
 
     med_name = models.CharField(max_length=100)
     med_form = models.CharField(max_length=40, null=True)
