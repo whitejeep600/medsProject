@@ -1,4 +1,6 @@
 {% load static %}
+{% load render_table from django_tables2 %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,29 +31,7 @@
 
 <div class="tableDiv">
 
-    <table>
-        <tr>
-            <th>
-                <button class="headerSortButton">some column</button>
-            </th>
-            <th>
-                <button class="headerSortButton">some column</button>
-            </th>
-            <th>
-                <button class="headerSortButton">some column</button>
-            </th>
-        </tr>
-        <tr>
-            <td>some value</td>
-            <td>some value</td>
-            <td>some value</td>
-        </tr>
-        <tr>
-            <td>some value</td>
-            <td>some value</td>
-            <td>some value</td>
-        </tr>
-    </table>
+    {% render_table drugTable %}
 
 </div>
 
