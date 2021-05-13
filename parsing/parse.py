@@ -27,7 +27,7 @@ def split_med(x):
     return [x[indices[i]:indices[i + 1]].strip(' ,') for i in range(len(indices) - 1)]
 
 def main(xlfile, date, db, table_name):
-    df_dict = pd.read_excel(xlfile, sheet_name=None)
+    df_dict = pd.read_excel(xlfile, sheet_name=None, dtype=object)
     for sh in ['A1', 'A2', 'A3', 'B', 'C']:
         # LP, Termin decyzji, Okres obowiązywania
         df_dict[sh].drop(columns=df_dict[sh].columns[[0, 5, 6]], inplace=True)
@@ -66,11 +66,22 @@ def main(xlfile, date, db, table_name):
         df.drop(columns=['med'], inplace=True)
         df_dict[key] = pd.concat([df, tmp], axis=1)
 
+    # Add lacking columns to some sheets.
     for sh in ['D', 'E']:
         with open(sh + '.txt', 'r') as f:
             df_dict[sh]['registered_funding'] = f.read()
         df_dict[sh]['payment_lvl'] = 'bezpłatny do limitu'
-        df_dict[sh]['patient_payment'] = 0
+        df_dict[sh]['patient_payment'] = '0,00'
+
+    # Change column types for to_sql() to work.
+    for key in df_dict:
+        for x in ['patient_payment', 'official_price', 'wholesale_price', 'retail_price', 'refund_limit']:
+            try:
+                df = df_dict[key]
+                df[x] = df[x].apply(lambda y: float(y.split()[0].replace(',', '.')))
+                df_dict[key] = df
+            except:
+                pass
 
     for df in df_dict.values():
         df.to_sql(table_name, con=create_engine('sqlite:///' + db), if_exists='append', index=False)
