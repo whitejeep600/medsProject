@@ -34,7 +34,7 @@
     {% render_table drugTable %}
 
 </div>
-
+{% comment %}
 <div class="pagingDiv">
     <div class="prevPageLink">
         <a href="{% url 'index' %}"> previous page</a>
@@ -48,7 +48,7 @@
     <div class="nextPageLink">
         <a href="{% url 'index' %}"> next page</a>
     </div>
-</div>
+</div>{% endcomment %}
 
 </body>
 </html>

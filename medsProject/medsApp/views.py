@@ -6,7 +6,22 @@ from .models import *
 from .table import *
 
 def index(request):
-    drugTable = DrugTable(Drug.objects.all())
+
+    drugs = Drug.objects.all()
+
+    sortBy = request.GET.get("sort")
+    if sortBy:
+        drugs = drugs.order_by(sortBy)
+
+    filterSlug = request.GET.get("filter")
+    filters = None
+    if filterSlug:
+        filters = dict([singleFilter.split(":",1) for singleFilter in filterSlug.split(",")])
+        # also allow matches which contain the searched keyword
+        lazyFilters = {(key+"__contains"):value for (key,value) in filters.items()}
+        drugs = drugs.filter(**lazyFilters)
+
+    drugTable = DrugTable(drugs).paginate(page=request.GET.get("page",1),per_page=25)
 
     template = loader.get_template('medsApp/mainpage.html')
 
