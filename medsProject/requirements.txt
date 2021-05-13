@@ -1,0 +1,6 @@
+asgiref
+django
+pytz
+setuptools
+sqlparse
+django-environ
