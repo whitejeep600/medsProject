@@ -26,5 +26,3 @@ def index(request):
 
     context = pack("drugTable","filter",locals=locals())
     return HttpResponse(template.render(context, request))
-
-# Create your views here.

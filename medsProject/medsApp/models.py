@@ -27,10 +27,10 @@ class Drug(models.Model):
     limit_group = models.TextField(null=True)
 
     class PaymentType(models.TextChoices):
-        SMALLER_PRC = '50%'
-        BIGGER_PRC = '30%'
-        CONST = 'ryczałt'
-        FREE = 'bezpłatny do limitu'
+        SMALLER_PRC = '50%', _('50 %')
+        BIGGER_PRC = '30%', _('30 %')
+        CONST = 'ryczałt', _('Ryczałt')
+        FREE = 'bezpłatny do limitu', _('Bezpłatny do limitu')
 
     payment_lvl = models.CharField(
         max_length=20,
