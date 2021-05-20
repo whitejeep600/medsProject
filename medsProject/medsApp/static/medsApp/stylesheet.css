@@ -11,7 +11,6 @@ html, body {
     width: 90%;
     left: 5%;
     top: 15%;
-    border-style: ridge;
 }
 
 .filtrationDiv {
@@ -74,6 +73,7 @@ html, body {
 
 .filterButton {
     position: absolute;
+    background-color: deepskyblue;
     height: 30%;
     left: 55%;
     top: 50%;
@@ -119,19 +119,47 @@ html, body {
     height: 40%;
 }
 
-table {
+table{
+    border: 1px solid black;
+}
+
+table span {
     table-layout: fixed;
     width: 100%;
     border-collapse: collapse;
 }
 
-tbody tr:nth-child(odd) {
-  background-color: antiquewhite;
+td {
+    text-align: center;
+    overflow: hidden;
+    font-size: small;
 }
 
+button{
+    background-color: #2377f6;
+    position: relative;
+    font-size: medium;
+    width: 7%;
+    left: 8%;
+    top: 3%;
+}
 
-.headerSortButton{
+tbody tr:nth-child(odd) {
+    background-color: white;
+}
+
+tbody tr:nth-child(even) {
+
+}
+
+.headerSortButton {
     background-color: inherit;
 }
+
+a {
+  color: black;
+    text-decoration: none;
+}
+
 
 
