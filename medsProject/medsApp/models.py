@@ -197,8 +197,7 @@ class Drug(models.Model):
         if not past or past.date >= self.date:
             return
         def meaningful_fields(y):
-            return (y.id,
-                    y.active_substance,
+            return (y.active_substance,
                     y.med_name,
                     y.med_form,
                     y.dose,
@@ -210,7 +209,7 @@ class Drug(models.Model):
                     y.wholesale_price,
                     y.retail_price,
                     y.refund_limit)
-        if(meaningful_fields(past) == meaningful_fields(self)):
+        if meaningful_fields(past) == meaningful_fields(self):
             self.last_changed = past.date
         else:
             self.last_changed = self.date
