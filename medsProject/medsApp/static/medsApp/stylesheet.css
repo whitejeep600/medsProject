@@ -135,6 +135,7 @@ td {
     font-size: small;
 }
 
+/*
 button{
     background-color: #2377f6;
     position: relative;
@@ -143,6 +144,7 @@ button{
     left: 8%;
     top: 3%;
 }
+*/
 
 tbody tr:nth-child(odd) {
     background-color: white;
@@ -160,6 +162,3 @@ a {
   color: black;
     text-decoration: none;
 }
-
-
-

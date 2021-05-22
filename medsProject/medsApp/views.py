@@ -34,5 +34,6 @@ def index(request):
             locals = {}
         return {key: locals.get(key, globals().get(key)) for key in names}
 
-    context = pack("drugTable","filter",locals=locals())
+    print(dir(drugTable))
+    context = pack("drugTable", "filter", locals=locals())
     return HttpResponse(template.render(context, request))

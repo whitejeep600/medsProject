@@ -8,7 +8,24 @@
     <link rel="stylesheet" type="text/css" href="{% static 'medsApp/stylesheet.css' %}"{% now "U" %}>
     <meta charset="UTF-8">
     <title>Main page of the Lorem browser</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            var trs = document.getElementById('tabdiv').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+            for (var row of trs) {
+                row.insertAdjacentHTML("afterend", '<button type="button" class="btn">Details</button><div>TOGGLE DATA</div>');
+            }
+            $(document).on('click', '#tabdiv', (e) => {
+                e.preventDefault();
+                const isButton = e.target.nodeName === 'BUTTON';
+                if (isButton) {
+                    $(e.target).next().toggle();
+                }
+            });
+        });
+    </script>
 </head>
+
 <body>
 {% if filter %}
     <form action="" method="get" class="form form-inline">
@@ -17,7 +34,7 @@
     </form>
 {% endif %}
 
-<div class="tableDiv">
+<div class="tableDiv" id="tabdiv">
 
     {% render_table drugTable 'django_tables2/bootstrap.html' %}
 
