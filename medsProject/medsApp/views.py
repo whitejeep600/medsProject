@@ -1,24 +1,20 @@
 from django.shortcuts import render
-from django.db.models import Min
+from django.db.models import Min,F
 
 from django.http import HttpResponse
 from django.template import loader
 from .models import *
 from .table import *
 import django_filters.filterset as filterset
+import dateutil.parser
 
-def index(request):
+def index(request,date=dateutil.parser.parse("2021-03-01 00:00:00")):
 
-    filter = DrugFilterSet(request.GET, queryset=Drug.objects.all())
-    # filter = DrugFilterSet(request.GET, queryset=Drug.objects.get_changed())
+    beforeUserFilter = Drug.objects.all().filter(date=date,last_changed=F("date")).order_by("gtin")
+
+    filter = DrugFilterSet(request.GET, queryset=beforeUserFilter)
 
     drugs = filter.qs
-
-    earliest = drugs.order_by('date')[0].date
-    diff_pk_none = drugs.filter(diff_pk=None)
-    drugs = drugs.filter(date=earliest).exclude(diff_pk=None)
-
-    drugs = drugs | diff_pk_none
 
     sortBy = request.GET.get("sort")
     if sortBy:

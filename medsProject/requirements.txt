@@ -6,4 +6,5 @@ sqlparse
 django-environ
 django-tables2
 django-bootstrap3
-django-filters
+django-filter
+python-dateutil

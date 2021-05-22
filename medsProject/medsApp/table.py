@@ -56,4 +56,5 @@ class DrugFilterSet(filters.FilterSet):
         fields = {
             "gtin": ["contains"],
             "dose": ["contains"],
+            "company_name": ["contains"],
         }
