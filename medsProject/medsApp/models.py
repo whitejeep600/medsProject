@@ -12,6 +12,20 @@ class DrugManager(models.Manager):
     def set_diff(self, drugs):
         for drug in drugs:
             drug.set_diff()
+
+    def set_companies(self, path):
+        file = open(path)
+        line = file.readline()
+        while line != "":
+            tokens = line.split('|')
+            gtin = tokens[0]
+            company_name = tokens[1]
+            for drug in Drug.objects.filter(gtin=gtin):
+                drug.company_name = company_name
+                drug.save()
+            line = file.readline()
+        file.close()
+
     def get_changed(self):
         return self.raw(
             '''SELECT x.* FROM medsApp_drug AS x, medsApp_drug AS y
@@ -53,7 +67,7 @@ class Drug(models.Model):
     med_name = models.CharField(max_length=100)
     med_form = models.CharField(max_length=40, null=True)
     dose = models.CharField(max_length=40, null=True)
-
+    company_name = models.CharField(max_length=40, null=True)
     pack_size = models.CharField(max_length=50)
 
     limit_group = models.TextField(null=True)
@@ -81,6 +95,8 @@ class Drug(models.Model):
             xd = Drug.objects.filter(gtin=self.gtin, registered_funding=self.registered_funding, nonregistered_funding=self.nonregistered_funding).exclude(pk=self.pk)
             self.diff_pk = xd[0] if xd else None
             self.save()
+
+
 
     @property
     def diff_active_substance(self):

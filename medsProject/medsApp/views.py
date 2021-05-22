@@ -10,7 +10,6 @@ import django_filters.filterset as filterset
 def index(request):
 
     filter = DrugFilterSet(request.GET, queryset=Drug.objects.all())
-    # filter = DrugFilterSet(request.GET, queryset=Drug.objects.get_changed())
 
     drugs = filter.qs
 
