@@ -30,6 +30,5 @@ def index(request,date=dateutil.parser.parse("2021-03-01 00:00:00")):
             locals = {}
         return {key: locals.get(key, globals().get(key)) for key in names}
 
-    print(dir(drugTable))
     context = pack("drugTable", "filter", locals=locals())
     return HttpResponse(template.render(context, request))
