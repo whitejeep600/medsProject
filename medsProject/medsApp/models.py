@@ -102,8 +102,8 @@ class Drug(models.Model):
     def diff_active_substance(self):
         if self.diff_pk:
             tmp = Drug.objects.get(pk=self.diff_pk.pk).active_substance
-            return tmp if tmp == self.active_substance else '{0} | {1}'.format(self.active_substance, tmp)
-        return self.active_substance + ' | none'
+            return tmp if tmp == self.active_substance else '{0}\n|\n{1}'.format(self.active_substance, tmp)
+        return self.active_substance + '\n|\nnone'
 
     @property
     def diff_date(self):
@@ -112,85 +112,85 @@ class Drug(models.Model):
             if (not tmp):
                 print(self)
                 print('puste')
-            return tmp if tmp == self.date else '{0} | {1}'.format(self.date, tmp)
-        return self.date + ' | none '
+            return tmp if tmp == self.date else '{0}\n|\n{1}'.format(self.date, tmp)
+        return self.date + '\n|\nnone '
 
     @property
     def diff_med_name(self):
         if self.diff_pk:
             tmp = Drug.objects.get(pk=self.diff_pk.pk).med_name
-            return tmp if tmp == self.med_name else '{0} | {1}'.format(self.med_name, tmp)
-        return self.med_name + ' | none'
+            return tmp if tmp == self.med_name else '{0}\n|\n{1}'.format(self.med_name, tmp)
+        return self.med_name + '\n|\nnone'
 
     @property
     def diff_med_form(self):
         if self.diff_pk:
             tmp = Drug.objects.get(pk=self.diff_pk.pk).med_form
-            return tmp if tmp == self.med_form else '{0} | {1}'.format(self.med_form, tmp)
-        return self.med_form + ' | none'
+            return tmp if tmp == self.med_form else '{0}\n|\n{1}'.format(self.med_form, tmp)
+        return self.med_form + '\n|\nnone'
 
     @property
     def diff_dose(self):
         if self.diff_pk:
             tmp = Drug.objects.get(pk=self.diff_pk.pk).dose
-            return tmp if tmp == self.dose else '{0} | {1}'.format(self.dose, tmp)
-        return self.dose + ' | none'
+            return tmp if tmp == self.dose else '{0}\n|\n{1}'.format(self.dose, tmp)
+        return self.dose + '\n|\nnone'
 
     @property
     def diff_pack_size(self):
         if self.diff_pk:
             tmp = Drug.objects.get(pk=self.diff_pk.pk).pack_size
-            return tmp if tmp == self.pack_size else '{0} | {1}'.format(self.pack_size, tmp)
-        return self.pack_size + ' | none'
+            return tmp if tmp == self.pack_size else '{0}\n|\n{1}'.format(self.pack_size, tmp)
+        return self.pack_size + '\n|\nnone'
 
     @property
     def diff_limit_group(self):
         if self.diff_pk:
             tmp = Drug.objects.get(pk=self.diff_pk.pk).limit_group
-            return tmp if tmp == self.limit_group else '{0} | {1}'.format(self.limit_group, tmp)
-        return self.limit_group + ' | none'
+            return tmp if tmp == self.limit_group else '{0}\n|\n{1}'.format(self.limit_group, tmp)
+        return self.limit_group + '\n|\nnone'
 
     @property
     def diff_payment_lvl(self):
         if self.diff_pk:
             tmp = Drug.objects.get(pk=self.diff_pk.pk).payment_lvl
-            return tmp if tmp == self.payment_lvl else '{0} | {1}'.format(self.payment_lvl, tmp)
-        return self.payment_lvl + ' | none'
+            return tmp if tmp == self.payment_lvl else '{0}\n|\n{1}'.format(self.payment_lvl, tmp)
+        return self.payment_lvl + '\n|\nnone'
 
     @property
     def diff_patient_payment(self):
         if self.diff_pk:
             tmp = Drug.objects.get(pk=self.diff_pk.pk).patient_payment
-            return tmp if tmp == self.patient_payment else '{0} | {1}'.format(self.patient_payment, tmp)
-        return self.patient_payment + ' | none'
+            return tmp if tmp == self.patient_payment else '{0}\n|\n{1}'.format(self.patient_payment, tmp)
+        return self.patient_payment + '\n|\nnone'
 
     @property
     def diff_official_price(self):
         if self.diff_pk:
             tmp = Drug.objects.get(pk=self.diff_pk.pk).official_price
-            return tmp if tmp == self.official_price else '{0} | {1}'.format(self.official_price, tmp)
-        return self.official_price + ' | none'
+            return tmp if tmp == self.official_price else '{0}\n|\n{1}'.format(self.official_price, tmp)
+        return self.official_price + '\n|\nnone'
 
     @property
     def diff_wholesale_price(self):
         if self.diff_pk:
             tmp = Drug.objects.get(pk=self.diff_pk.pk).wholesale_price
-            return tmp if tmp == self.wholesale_price else '{0} | {1}'.format(self.wholesale_price, tmp)
-        return self.wholesale_price + ' | none'
+            return tmp if tmp == self.wholesale_price else '{0}\n|\n{1}'.format(self.wholesale_price, tmp)
+        return self.wholesale_price + '\n|\nnone'
 
     @property
     def diff_retail_price(self):
         if self.diff_pk:
             tmp = Drug.objects.get(pk=self.diff_pk.pk).retail_price
-            return tmp if tmp == self.retail_price else '{0} | {1}'.format(self.retail_price, tmp)
-        return self.retail_price + ' | none'
+            return tmp if tmp == self.retail_price else '{0}\n|\n{1}'.format(self.retail_price, tmp)
+        return self.retail_price + '\n|\nnone'
 
     @property
     def diff_refund_limit(self):
         if self.diff_pk:
             tmp = Drug.objects.get(pk=self.diff_pk.pk).refund_limit
-            return tmp if tmp == self.refund_limit else '{0} | {1}'.format(self.refund_limit, tmp)
-        return self.refund_limit + ' | none'
+            return tmp if tmp == self.refund_limit else '{0}\n|\n{1}'.format(self.refund_limit, tmp)
+        return self.refund_limit + '\n|\nnone'
 
     def set_diff(self):
         past = self.diff_pk
