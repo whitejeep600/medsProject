@@ -9,23 +9,26 @@ class DrugManager(models.Manager):
     def set_diff_pk(self, drugs):
         for drug in drugs:
             drug.set_diff_pk()
+    def set_diff(self, drugs):
+        for drug in drugs:
+            drug.set_diff()
     def get_changed(self):
         return self.raw(
             '''SELECT x.* FROM medsApp_drug AS x, medsApp_drug AS y
 WHERE x.diff_pk_id IS NULL OR
 (y.id=x.diff_pk_id AND
-(y.active_substance!=x.active_substance OR
-y.med_name!=x.med_name OR
-y.med_form!=x.med_form OR
-y.dose!=x.dose OR
-y.pack_size!=x.pack_size OR
-y.limit_group!=x.limit_group OR
-y.payment_lvl!=x.payment_lvl OR
-y.patient_payment!=x.patient_payment OR
-y.official_price!=x.official_price OR
-y.wholesale_price!=x.wholesale_price OR
-y.retail_price!=x.retail_price OR
-y.refund_limit!=x.refund_limit
+(y.active_substance                                                                        x.active_substance OR
+y.med_name                                                                        x.med_name OR
+y.med_form                                                                        x.med_form OR
+y.dose                                                                        x.dose OR
+y.pack_size                                                                        x.pack_size OR
+y.limit_group                                                                        x.limit_group OR
+y.payment_lvl                                                                        x.payment_lvl OR
+y.patient_payment                                                                        x.patient_payment OR
+y.official_price                                                                        x.official_price OR
+y.wholesale_price                                                                        x.wholesale_price OR
+y.retail_price                                                                        x.retail_price OR
+y.refund_limit                                                                        x.refund_limit
 )
 );'''
         )
@@ -45,6 +48,7 @@ class Drug(models.Model):
     active_substance = models.CharField(max_length=100)
 
     date = models.DateTimeField()
+    last_changed = models.DateTimeField(null=True,blank=True)
 
     med_name = models.CharField(max_length=100)
     med_form = models.CharField(max_length=40, null=True)
@@ -64,7 +68,7 @@ class Drug(models.Model):
         max_length=20,
         choices=PaymentType.choices, 
     )
-
+    
     patient_payment = models.DecimalField(decimal_places=2, max_digits=8)
 
     official_price = models.DecimalField(decimal_places=2, max_digits=8, null=True)
@@ -171,3 +175,27 @@ class Drug(models.Model):
             tmp = Drug.objects.get(pk=self.diff_pk.pk).refund_limit
             return tmp if tmp == self.refund_limit else '{0} | {1}'.format(self.refund_limit, tmp)
         return self.refund_limit + ' | none'
+
+    def set_diff(self):
+        past = self.diff_pk
+        if not past or past.date >= self.date:
+            return
+        def meaningful_fields(y):
+            return (y.id,
+                    y.active_substance,
+                    y.med_name,
+                    y.med_form,
+                    y.dose,
+                    y.pack_size,
+                    y.limit_group,
+                    y.payment_lvl,
+                    y.patient_payment,
+                    y.official_price,
+                    y.wholesale_price,
+                    y.retail_price,
+                    y.refund_limit)
+        if(meaningful_fields(past) == meaningful_fields(self)):
+            self.last_changed = past.date
+        else:
+            self.last_changed = self.date
+        self.save()
