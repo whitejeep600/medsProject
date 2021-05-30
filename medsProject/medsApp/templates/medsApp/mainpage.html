@@ -11,14 +11,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(() => {
-            var trs = document.getElementById('tabdiv').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
             var ths = document.getElementById('tabdiv').getElementsByTagName('thead')[0].getElementsByTagName('tr');
             for (var th of ths) {
                 th.children[3].remove();
                 th.children[3].remove();
                 th.children[7].remove();
             }
-            debugger;
+            var trs = $('tbody:first').children('tr');
             for (var row of trs) {
                 var reg = row.children[3];
                 var non = row.children[4];
@@ -29,7 +28,7 @@
                 reg.remove();
                 non.remove();
                 lim.remove();
-                row.insertAdjacentHTML("afterend", '<button type="button" class="btn">Details</button><table><thead><tr><th>Registered funding</th><th>Nonregistered funding</th><th>Limit group</th></tr></thead><tbody><tr><td>' + Reg + '</td><td>' + Non + '</td><td>' + Lim + '</td></tr></tbody></table>');
+                $(row).after('<button type="button" class="btn">Details</button><table style="display:none;"><thead><tr><th>Registered funding</th><th>Nonregistered funding</th><th>Limit group</th></tr></thead><tbody><tr><td>' + Reg + '</td><td>' + Non + '</td><td>' + Lim + '</td></tr></tbody></table>');
             }
             $(document).on('click', '#tabdiv', (e) => {
                 e.preventDefault();
