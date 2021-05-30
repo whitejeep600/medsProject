@@ -4,7 +4,7 @@ import django_filters as filters
 import django_filters.views
 
 def key_cols(s):
-    s -= {'diff_id', 'diff_diff_pk', 'diff_gtin', 'diff_registered_funding', 'diff_nonregistered_funding'}
+    s -= {'diff_id', 'diff_diff_pk', 'diff_gtin', 'diff_registered_funding', 'diff_nonregistered_funding', 'diff_company_name', 'diff_last_changed'}
     s |= {'gtin', 'registered_funding', 'nonregistered_funding'}
     return s
 
