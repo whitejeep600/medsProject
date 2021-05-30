@@ -28,7 +28,20 @@
                 reg.remove();
                 non.remove();
                 lim.remove();
-                $(row).after('<button type="button" class="btn">Details</button><table style="display:none;"><thead><tr><th>Registered funding</th><th>Nonregistered funding</th><th>Limit group</th></tr></thead><tbody><tr><td>' + Reg + '</td><td>' + Non + '</td><td>' + Lim + '</td></tr></tbody></table>');
+                $(row).after('<button type="button" class="btn">Details</button><table style="display:none;"><thead><tr><th>Registered funding</th><th>Nonregistered funding</th><th>Limit group</th></tr></thead><tbody><tr class="detailed"><td>' + Reg + '</td><td>' + Non + '</td><td>' + Lim + '</td></tr></tbody></table>');
+                for (var i = 1; i < row.children.length; ++i) {
+                    if (row.children[i].innerHTML.indexOf('|') !== -1) {
+                        row.children[i].style.backgroundColor = 'cyan';
+                    }
+                }
+            }
+            var rows = $('.detailed');
+            for (var row of rows) {
+                for (var c of row.children) {
+                    if (c.innerHTML.indexOf('|') !== -1) {
+                        c.style.backgroundColor = 'cyan';
+                    }
+                }
             }
             $(document).on('click', '#tabdiv', (e) => {
                 e.preventDefault();
