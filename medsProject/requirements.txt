@@ -8,3 +8,4 @@ django-tables2
 django-bootstrap3
 django-filter
 python-dateutil
+uwsgi
