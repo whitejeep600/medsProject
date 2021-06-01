@@ -25,6 +25,9 @@ class DrugTable(tables.Table):
     class Meta:
         model = Drug
         attrs = {'class': 'table'}
+        row_attrs = {
+            'class': 'drugRow'
+        }
         fields = key_cols({'diff_' + f.name for f in Drug._meta.fields})
         sequence = (
             'diff_date',
