@@ -54,7 +54,8 @@ class DrugFilterSet(filters.FilterSet):
     class Meta:
         model = Drug
         fields = {
-            "gtin": ["contains"],
-            "dose": ["contains"],
+            "med_name": ["contains"],
             "company_name": ["contains"],
+            "limit_group": ["contains"],
+            "active_substance": ["contains"]
         }
