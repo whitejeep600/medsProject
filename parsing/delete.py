@@ -5,8 +5,9 @@ from openpyxl import load_workbook
 def main(xlfile):
     wb = load_workbook(filename=xlfile)
     for lbl in ['D', 'E']:
-        with open(lbl + '.txt', 'w') as f:
-            f.write(wb[lbl].cell(row=1, column=1).value[3:])
+        if lbl in wb.sheetnames:
+            with open(lbl + '.txt', 'w') as f:
+                f.write(wb[lbl].cell(row=1, column=1).value[3:])
     for ws in wb.worksheets:
         ws.delete_rows(0)
     wb.save(xlfile)

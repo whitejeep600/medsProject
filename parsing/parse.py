@@ -1,7 +1,8 @@
 import sys
 import re
 import pandas as pd
-from sqlalchemy import create_engine
+from sqlalchemy import *
+from sqlalchemy import schema
 
 # assumes there are no commas in med_name,
 # no commas in dose if there is no '0,' in dose
@@ -26,15 +27,16 @@ def split_med(x):
     indices.append(None)
     return [x[indices[i]:indices[i + 1]].strip(' ,') for i in range(len(indices) - 1)]
 
-def main(xlfile, date, db, table_name):
+def main(xlfile, date, db, drug_table, key_table):
     df_dict = pd.read_excel(xlfile, sheet_name=None, dtype=object)
     for sh in ['A1', 'A2', 'A3', 'B', 'C']:
         # LP, Termin decyzji, Okres obowiązywania
         df_dict[sh].drop(columns=df_dict[sh].columns[[0, 5, 6]], inplace=True)
 
     for sh in ['D', 'E']:
-        # LP
-        df_dict[sh].drop(columns=df_dict[sh].columns[[0]], inplace=True)
+        if sh in df_dict:
+            # LP
+            df_dict[sh].drop(columns=df_dict[sh].columns[[0]], inplace=True)
 
     for key, df in df_dict.items():
         # rename columns for database and normalise "nazwa postać dawka" to "med" to split it
@@ -45,6 +47,7 @@ def main(xlfile, date, db, table_name):
             'Nazwa i postać leku': 'med',
             'Zawartość opakowania': 'pack_size',
             'Numer GTIN lub inny kod jednoznacznie identyfikujący produkt': 'gtin',
+            'Kod EAN lub inny kod odpowiadający kodowi EAN': 'gtin',
             'Grupa limitowa': 'limit_group',
             'Urzędowa cena zbytu': 'official_price',
             'Cena hurtowa brutto' : 'wholesale_price',
@@ -68,10 +71,11 @@ def main(xlfile, date, db, table_name):
 
     # Add lacking columns to some sheets.
     for sh in ['D', 'E']:
-        with open(sh + '.txt', 'r') as f:
-            df_dict[sh]['registered_funding'] = f.read()
-        df_dict[sh]['payment_lvl'] = 'bezpłatny do limitu'
-        df_dict[sh]['patient_payment'] = '0,00'
+        if sh in df_dict:
+            with open(sh + '.txt', 'r') as f:
+                df_dict[sh]['registered_funding'] = f.read()
+            df_dict[sh]['payment_lvl'] = 'bezpłatny do limitu'
+            df_dict[sh]['patient_payment'] = '0,00'
 
     # Change column types for to_sql() to work.
     for key in df_dict:
@@ -83,13 +87,40 @@ def main(xlfile, date, db, table_name):
             except:
                 pass
 
-    for df in df_dict.values():
-        df.to_sql(table_name, con=create_engine('sqlite:///' + db), if_exists='append', index=False)
+    key_dict = {}
+    for sh in ['A1', 'A2', 'A3', 'B', 'C']:
+        if 'nonregistered_funding' in df_dict[sh].columns.values.tolist():
+            key_dict[sh] = df_dict[sh][['gtin', 'registered_funding', 'nonregistered_funding']]
+            df_dict[sh].drop(['gtin', 'registered_funding', 'nonregistered_funding'], axis=1, inplace=True)
+        else:
+            key_dict[sh] = df_dict[sh][['gtin', 'registered_funding']]
+            df_dict[sh].drop(['gtin', 'registered_funding'], axis=1, inplace=True)
+
+    engine = create_engine('sqlite:///' + db)
+    keys = Table(key_table, MetaData(), autoload=True, autoload_with=engine)
+    drugs = Table(drug_table, MetaData(), autoload=True, autoload_with=engine)
+    with engine.connect() as conn:
+        for df, key in zip(df_dict.values(), key_dict.values()):
+            for a, b in zip(df.iterrows(), key.iterrows()):
+                tmp_dict = b[1].to_dict()
+                com = select(keys.c.id).where(keys.c.gtin == tmp_dict['gtin']).where(keys.c.nonregistered_funding == tmp_dict.get('nonregistered_funding', None)).where(keys.c.registered_funding == tmp_dict['registered_funding'])
+                result = conn.execute(com).first()
+                key_id = result[0] if result else conn.execute(
+                        insert(keys),
+                        tmp_dict
+                    ).inserted_primary_key[0]
+
+                tmp = a[1].to_dict()
+                tmp['key_id'] = key_id
+                conn.execute(
+                    insert(drugs),
+                    tmp
+                )
 
 
 if __name__ == "__main__":
     args = sys.argv[1:]
-    if len(args) != 4:
-        exit("Usage: python3 parse.py path/to/spreadsheet.xlsx YYYYMMDD /absolute/path/to/sqlite/db db_name")
+    if len(args) != 5:
+        exit("Usage: python3 parse.py path/to/spreadsheet.xlsx YYYYMMDD /absolute/path/to/sqlite/db drug_table_db_name key_table_db_name")
 
-    sys.exit(main(args[0], args[1], args[2], args[3]))
+    sys.exit(main(args[0], args[1], args[2], args[3], args[4]))

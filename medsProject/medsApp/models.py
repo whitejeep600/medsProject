@@ -26,6 +26,8 @@ class DrugKey(models.Model):
     # funding
     registered_funding = models.TextField()
     nonregistered_funding = models.TextField(null=True)
+    class Meta:
+        unique_together = ('gtin', 'registered_funding', 'nonregistered_funding')
 
 
 class Drug(models.Model):
