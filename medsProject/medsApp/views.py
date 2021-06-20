@@ -7,12 +7,13 @@ from .models import *
 from .table import *
 import django_filters.filterset as filterset
 import dateutil.parser
+import charts
 
 def index(request,date=dateutil.parser.parse("2021-03-01 00:00:00")):
 
-    beforeUserFilter = Drug.objects.all().filter(date=date,last_changed=F("date")).order_by("gtin")
+    beforeUserFilter = DrugKey.objects.all().order_by("gtin")
 
-    filter = DrugFilterSet(request.GET, queryset=beforeUserFilter)
+    filter = DrugKeyFilterSet(request.GET, queryset=beforeUserFilter)
 
     drugs = filter.qs
 
@@ -22,7 +23,7 @@ def index(request,date=dateutil.parser.parse("2021-03-01 00:00:00")):
             sortBy = sortBy[5:]
         drugs = drugs.order_by(sortBy)
 
-    drugTable = DrugTable(drugs).paginate(page=request.GET.get("page",1),per_page=25)
+    drugKeyTable = DrugKeyTable(drugs).paginate(page=request.GET.get("page",1),per_page=25)
     template = loader.get_template('medsApp/mainpage.html')
 
     def pack(*names, locals=None):
@@ -30,5 +31,7 @@ def index(request,date=dateutil.parser.parse("2021-03-01 00:00:00")):
             locals = {}
         return {key: locals.get(key, globals().get(key)) for key in names}
 
-    context = pack("drugTable", "filter", locals=locals())
+    context = pack("drugKeyTable", "filter", locals=locals())
+    for med in DrugKey.objects.all():
+        context[med.gtin + med.registered_funding + med.nonregistered_funding] = charts.get_data_source(med)
     return HttpResponse(template.render(context, request))

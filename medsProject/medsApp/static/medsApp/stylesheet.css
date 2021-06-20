@@ -10,6 +10,7 @@ html, body {
     height: 70%;
     width: 90%;
     left: 5%;
+    margin: auto;
     top: 15%;
 }
 
@@ -18,7 +19,7 @@ html, body {
     position: absolute;
     height: 12%;
     width: 60%;
-    left: 5%;
+    left: 10%;
     top: 3%;
     border-style: ridge;
 }
@@ -121,18 +122,22 @@ html, body {
 
 table{
     border: 1px solid black;
+    margin-left: auto;
+   margin-right: auto;
 }
 
 table span {
     table-layout: fixed;
     width: 100%;
     border-collapse: collapse;
+    margin: auto;
 }
 
 td {
     text-align: center;
     overflow: hidden;
     font-size: small;
+    padding: 5px;
 }
 
 /*

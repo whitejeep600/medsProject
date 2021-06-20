@@ -3,10 +3,12 @@ from .models import *
 import django_filters as filters
 import django_filters.views
 
+
 def key_cols(s):
     s -= {'diff_id', 'diff_diff_pk', 'diff_gtin', 'diff_registered_funding', 'diff_nonregistered_funding', 'diff_company_name', 'diff_last_changed'}
     s |= {'gtin', 'registered_funding', 'nonregistered_funding'}
     return s
+
 
 class DrugTable(tables.Table):
     diff_date = tables.TemplateColumn("{{ record.diff_date | linebreaksbr }}",verbose_name='Date')
@@ -22,6 +24,7 @@ class DrugTable(tables.Table):
     diff_refund_limit = tables.TemplateColumn("{{record.diff_refund_limit|linebreaksbr}}" , verbose_name='Refund limit')
     diff_patient_payment = tables.TemplateColumn("{{record.diff_patient_payment|linebreaksbr}}" , verbose_name='Patient payment')
     diff_wholesale_price = tables.TemplateColumn("{{record.diff_wholesale_price|linebreaksbr}}" , verbose_name='Wholesale price')
+
     class Meta:
         model = Drug
         attrs = {'class': 'table'}
@@ -58,4 +61,25 @@ class DrugFilterSet(filters.FilterSet):
             "company_name": ["contains"],
             "limit_group": ["contains"],
             "active_substance": ["contains"]
+        }
+
+
+class DrugKeyTable(tables.Table):
+
+    class Meta:
+        model = DrugKey
+        attrs = {'class': 'table'}
+        fields = key_cols({'diff_' + f.name for f in DrugKey._meta.fields})
+        sequence = (
+            'gtin',
+            'registered_funding',
+            'nonregistered_funding',
+        )
+
+
+class DrugKeyFilterSet(filters.FilterSet):
+    class Meta:
+        model = DrugKey
+        fields = {
+            "gtin": ["contains"],
         }

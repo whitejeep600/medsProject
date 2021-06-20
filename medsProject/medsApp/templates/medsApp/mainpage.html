@@ -9,49 +9,8 @@
     <meta charset="UTF-8">
     <title>Main page of the Lorem browser</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(() => {
-            var ths = document.getElementById('tabdiv').getElementsByTagName('thead')[0].getElementsByTagName('tr');
-            for (var th of ths) {
-                th.children[3].remove();
-                th.children[3].remove();
-                th.children[7].remove();
-            }
-            var trs = $('tbody:first').children('tr');
-            for (var row of trs) {
-                var reg = row.children[3];
-                var non = row.children[4];
-                var lim = row.children[9];
-                var Reg = reg.innerHTML;
-                var Non = non.innerHTML;
-                var Lim = lim.innerHTML;
-                reg.remove();
-                non.remove();
-                lim.remove();
-                $(row).after('<button type="button" class="btn">Details</button><table style="display:none;"><thead><tr><th>Registered funding</th><th>Nonregistered funding</th><th>Limit group</th></tr></thead><tbody><tr class="detailed"><td>' + Reg + '</td><td>' + Non + '</td><td>' + Lim + '</td></tr></tbody></table>');
-                for (var i = 1; i < row.children.length; ++i) {
-                    if (row.children[i].innerHTML.indexOf('|') !== -1) {
-                        row.children[i].style.backgroundColor = 'cyan';
-                    }
-                }
-            }
-            var rows = $('.detailed');
-            for (var row of rows) {
-                for (var c of row.children) {
-                    if (c.innerHTML.indexOf('|') !== -1) {
-                        c.style.backgroundColor = 'cyan';
-                    }
-                }
-            }
-            $(document).on('click', '#tabdiv', (e) => {
-                e.preventDefault();
-                const isButton = e.target.nodeName === 'BUTTON';
-                if (isButton) {
-                    $(e.target).next().toggle();
-                }
-            });
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
 </head>
 
 <body>
@@ -64,7 +23,28 @@
 
 <div class="tableDiv" id="tabdiv">
 
-    {% render_table drugTable 'django_tables2/bootstrap.html' %}
+    {% comment %}
+    w zasadzie przykład
+    <canvas id="someUniqueId" style="width:100%"></canvas>
+
+    <script>
+        new Chart("someUniqueId", {
+            type: "scatter",
+            data: {
+                datasets: [{
+                    pointRadius: 4,
+                    pointBackgroundColor: "lightblue",
+                    data: // {{ tutaj konkatenacja gtin + registered + nonregistered }}.parse()
+                }]
+            },
+            options: {
+                legend: {display: false},
+            }
+        });
+    </script>
+    {% endcomment %}
+
+    {% render_table drugKeyTable 'django_tables2/bootstrap.html' %}
 
 </div>
 {% comment %}
