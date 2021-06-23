@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse
 from django.conf import settings
+from django.utils.safestring import mark_safe
 
 class DrugManager(models.Manager):
     def set_companies(self, path):
@@ -19,6 +20,11 @@ class DrugManager(models.Manager):
             line = file.readline()
         file.close()
 
+def styleToHTML(styleDict):
+    if not styleDict:
+        return ""
+    else:
+        return "style=\"{}\"".format("; ".join((f"{k}: {v}" for (k,v) in styleDict.items())))
 
 class DrugKey(models.Model):
     gtin = models.CharField(max_length=50)
@@ -28,6 +34,68 @@ class DrugKey(models.Model):
     nonregistered_funding = models.TextField(null=True)
     class Meta:
         unique_together = ('gtin', 'registered_funding', 'nonregistered_funding')
+
+    def getData(self,attr,colour_diff=True):
+        data = [getattr(x,attr) for x in Drug.objects.filter(key=self).order_by("date")]
+        if not data:
+            return
+        prev = data[0]
+        tableStyle = {"width":"100%", "height":"100%", "min-height": "100%"}
+        html = f"<div {styleToHTML(tableStyle)}><table {styleToHTML(tableStyle)}><tbody {styleToHTML(tableStyle)}>"
+        for value in data:
+            # style = tableStyle
+            style={}
+            if colour_diff and value != prev:
+                style["background-color"]="cyan"
+            prev = value
+            html += f"<tr><td {styleToHTML(style)}>"
+            html += str(value)
+            html += "</td></tr>"
+        html += "</tbody></table></div>"
+        return mark_safe(html)
+
+    def getActiveSubstances(self):
+        return self.getData("active_substance")
+
+    def getDates(self):
+        return self.getData("date",colour_diff=False)
+
+    def getMedNames(self):
+        return self.getData("med_name")
+
+    def getMedForms(self):
+        return self.getData("med_form")
+
+    def getDoses(self):
+        return self.getData("dose")
+
+    def getCompanyNames(self):
+        return self.getData("company_name")
+
+    def getPackSizes(self):
+        return self.getData("pack_size")
+
+    def getLimitGroups(self):
+        return self.getData("limit_group")
+
+    def getPaymentLvls(self):
+        return self.getData("payment_lvl")
+
+    def getPatientPayments(self):
+        return self.getData("patient_payment")
+
+    def getOfficialPrices(self):
+        return self.getData("official_price")
+
+    def getWholesalePrices(self):
+        return self.getData("wholesale_price")
+
+    def getRetailPrices(self):
+        return self.getData("retail_price")
+
+    def getRefundLimits(self):
+        return self.getData("refund_limit")
+
 
 class Drug(models.Model):
     objects = DrugManager()
