@@ -73,6 +73,7 @@ class DrugKeyTable(tables.Table):
         model = DrugKey
         attrs = {'class': 'table'}
         row_attrs = {
-            'class': 'drugRow'
+            'class': 'drugRow',
+            'gtin': lambda record: record.gtin
         }
         # fields = sequence = ('gtin', 'registered_funding', 'nonregistered_funding')
