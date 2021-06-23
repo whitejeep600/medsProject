@@ -29,7 +29,6 @@ class DrugKey(models.Model):
     class Meta:
         unique_together = ('gtin', 'registered_funding', 'nonregistered_funding')
 
-
 class Drug(models.Model):
     objects = DrugManager()
 
