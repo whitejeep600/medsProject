@@ -36,7 +36,7 @@ class DrugKey(models.Model):
         unique_together = ('gtin', 'registered_funding', 'nonregistered_funding')
 
     def getData(self,attr,colour_diff=True):
-        data = [getattr(x,attr) for x in Drug.objects.filter(key=self).order_by("date")]
+        data = [getattr(x,attr) for x in Drug.objects.filter(key=self).order_by("date") if x.somethingHasChanged()]
         if not data:
             return
         prev = data[0]
@@ -132,3 +132,6 @@ class Drug(models.Model):
     wholesale_price = models.DecimalField(decimal_places=2, max_digits=8, null=True)
     retail_price = models.DecimalField(decimal_places=2, max_digits=8, null=True)
     refund_limit = models.DecimalField(decimal_places=2, max_digits=8, null=True)
+
+    def somethingHasChanged(self):
+        return True
