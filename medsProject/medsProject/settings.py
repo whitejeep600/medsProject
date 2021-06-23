@@ -42,11 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     "django_tables2",
     "django_filters",
     "bootstrap3"
 ]
+#    'django.contrib.staticfiles',
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

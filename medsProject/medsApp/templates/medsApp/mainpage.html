@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="{% static 'medsApp/stylesheet.css' %}"{% now "U" %}>
+    <link rel="stylesheet" type="text/css" href="{% static 'stylesheet.css' %}"{% now "U" %}>
     <meta charset="UTF-8">
     <title>Main page of the Lorem browser</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -28,7 +28,7 @@
                 reg.remove();
                 non.remove();
                 lim.remove();
-                $(row).after('<button type="button" class="btn">Details</button><table style="display:none;"><thead><tr><th>Registered funding</th><th>Nonregistered funding</th><th>Limit group</th></tr></thead><tbody><tr class="detailed"><td>' + Reg + '</td><td>' + Non + '</td><td>' + Lim + '</td></tr></tbody></table>');
+                $(row).after('<tr class="drugDetails" style="display:none;"><td colspan="100"><table><thead><tr><th>Registered funding</th><th>Nonregistered funding</th><th>Limit group</th></tr></thead><tbody><tr class="detailed"><td>' + Reg + '</td><td>' + Non + '</td><td>' + Lim + '</td></tr></tbody></table></td></tr>');
                 for (var i = 1; i < row.children.length; ++i) {
                     if (row.children[i].innerHTML.indexOf('|') !== -1) {
                         row.children[i].style.backgroundColor = 'cyan';
@@ -43,12 +43,10 @@
                     }
                 }
             }
-            $(document).on('click', '#tabdiv', (e) => {
-                e.preventDefault();
-                const isButton = e.target.nodeName === 'BUTTON';
-                if (isButton) {
-                    $(e.target).next().toggle();
-                }
+            $(document).on('click', '.drugRow', (e) => {
+                //e.preventDefault();
+                $($(e.target).parent().next('.drugDetails')[0]).toggle()
+
             });
         });
     </script>
