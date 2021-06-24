@@ -8,7 +8,7 @@ from .table import *
 import django_filters.filterset as filterset
 import dateutil.parser
 
-def index(request,date=dateutil.parser.parse("2021-03-01 00:00:00")):
+def index(request):
 
     # beforeUserFilter = Drug.objects.all().filter(date=date,last_changed=F("date")).order_by("gtin")
     #
@@ -22,7 +22,16 @@ def index(request,date=dateutil.parser.parse("2021-03-01 00:00:00")):
     #         sortBy = sortBy[5:]
     #     drugs = drugs.order_by(sortBy)
 
-    drugKeys = DrugKey.objects.all()
+    beforeUserFilter = DrugKey.objects.all().order_by("gtin")
+
+    filter = DrugFilterSet(request.GET, queryset=beforeUserFilter)
+
+    drugKeys = filter.qs
+
+    sortBy = request.GET.get("sort")
+
+    if sortBy:
+        drugKeys = drugKeys.order_by(sortBy)
 
     drugKeysTable = DrugKeyTable(drugKeys).paginate(page=request.GET.get("page",1),per_page=25)
     template = loader.get_template('medsApp/mainpage.html')
