@@ -35,6 +35,9 @@ class DrugKey(models.Model):
     class Meta:
         unique_together = ('gtin', 'registered_funding', 'nonregistered_funding')
 
+    def anythingHasChanged(self):
+        return self.getDataColumnHTML("date") is not None
+
     def getDataColumnHTML(self, attr, colour_diff=True):
         data = [getattr(x,attr) for x in Drug.objects.filter(key=self).order_by("date") if x.somethingHasChanged()]
         if not data:
@@ -138,4 +141,7 @@ class Drug(models.Model):
     refund_limit = models.DecimalField(decimal_places=2, max_digits=8, null=True)
 
     def somethingHasChanged(self):
+        for prev in Drug.objects.filter(key=self.key,date__lt=self.date).order_by("-date"):
+            comparing = set(["active_substance","med_name","med_form","dose","company_name","pack_size","limit_group","payment_lvl","patient_payment","official_price","wholesale_price","retail_price","refund_limit"])
+            return any(getattr(prev,name) != getattr(self,name) for name in comparing)
         return True

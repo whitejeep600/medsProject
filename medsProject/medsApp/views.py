@@ -42,4 +42,15 @@ def index(request):
         return {key: locals.get(key, globals().get(key)) for key in names}
 
     context = pack("drugKeysTable", "filter", locals=locals())
+
     return HttpResponse(template.render(context, request))
+
+
+def cache(fun):
+    x = {}
+    def result(*args,**kwargs):
+        if (args,kwargs) in x:
+            return x[(args,kwargs)]
+        x[(args, kwargs)] = fun(*args,**kwargs)
+        return x[(args,kwargs)]
+    return result
