@@ -40,18 +40,20 @@ class DrugKey(models.Model):
         if not data:
             return
         prev = data[0]
-        tableStyle = {"width":"100%", "height":"100%", "min-height": "100%"}
-        html = f"<div {styleToHTML(tableStyle)}><table {styleToHTML(tableStyle)}><tbody {styleToHTML(tableStyle)}>"
-        for value in data:
+        tableStyle = {"width":"100%", "height":"100%", "min-height": "100%", "display": "grid", "grid-auto-rows":"1fr"}
+        html = f"<div {styleToHTML(tableStyle)}>"
+        for (i,value) in enumerate(data):
             # style = tableStyle
-            style={}
+            style={"display":"flex","flex-direction":"column","justify-content":"center"}
             if colour_diff and value != prev:
                 style["background-color"]="cyan"
+            if i != 0:
+                style["border-top"] = "1px solid black"
             prev = value
-            html += f"<tr><td {styleToHTML(style)}>"
+            html += f"<div {styleToHTML(style)}>"
             html += str(value)
-            html += "</td></tr>"
-        html += "</tbody></table></div>"
+            html += "</div>"
+        html += "</div>"
         return mark_safe(html)
 
     def getActiveSubstances(self):

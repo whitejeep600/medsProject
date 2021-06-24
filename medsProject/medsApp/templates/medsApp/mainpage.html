@@ -11,6 +11,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(() => {
+            /*
             var ths = document.getElementById('tabdiv').getElementsByTagName('thead')[0].getElementsByTagName('tr');
             for (var th of ths) {
                 th.children[3].remove();
@@ -43,6 +44,8 @@
                     }
                 }
             }
+
+             */
             $(document).on('click', '.drugRow', (e) => {
                 //e.preventDefault();
                 $($(e.target).parent().next('.drugDetails')[0]).toggle()
