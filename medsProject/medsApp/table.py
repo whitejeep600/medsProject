@@ -42,6 +42,15 @@ class DrugTable(tables.Table):
 
 
 class DrugFilterSet(filters.FilterSet):
+
+    med_name = filters.CharFilter(field_name="med_name",method="multifilter",label="Medication name",lookup_expr="contains")
+    dosage = filters.CharFilter(field_name="does",method="multifilter",label="Dosage",lookup_expr="contains")
+    company_name = filters.CharFilter(field_name="company_name",method="multifilter",label="Company name",lookup_expr="contains")
+
+    def multifilter(self,queryset, name, value):
+        ids = set(x.key.id for x in Drug.objects.filter(**{name + "__contains":value}))
+        return queryset.filter(id__in=ids)
+
     class Meta:
         model = DrugKey
         # fields = {

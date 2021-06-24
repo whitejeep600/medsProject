@@ -35,7 +35,7 @@ class DrugKey(models.Model):
     class Meta:
         unique_together = ('gtin', 'registered_funding', 'nonregistered_funding')
 
-    def getData(self,attr,colour_diff=True):
+    def getDataColumnHTML(self, attr, colour_diff=True):
         data = [getattr(x,attr) for x in Drug.objects.filter(key=self).order_by("date") if x.somethingHasChanged()]
         if not data:
             return
@@ -57,47 +57,49 @@ class DrugKey(models.Model):
         return mark_safe(html)
 
     def getActiveSubstances(self):
-        return self.getData("active_substance")
+        return self.getDataColumnHTML("active_substance")
 
     def getDates(self):
-        return self.getData("date",colour_diff=False)
+        return self.getDataColumnHTML("date", colour_diff=False)
 
     def getMedNames(self):
-        return self.getData("med_name")
+        return self.getDataColumnHTML("med_name")
 
     def getMedForms(self):
-        return self.getData("med_form")
+        return self.getDataColumnHTML("med_form")
 
     def getDoses(self):
-        return self.getData("dose")
+        return self.getDataColumnHTML("dose")
 
     def getCompanyNames(self):
-        return self.getData("company_name")
+        return self.getDataColumnHTML("company_name")
 
     def getPackSizes(self):
-        return self.getData("pack_size")
+        return self.getDataColumnHTML("pack_size")
 
     def getLimitGroups(self):
-        return self.getData("limit_group")
+        return self.getDataColumnHTML("limit_group")
 
     def getPaymentLvls(self):
-        return self.getData("payment_lvl")
+        return self.getDataColumnHTML("payment_lvl")
 
     def getPatientPayments(self):
-        return self.getData("patient_payment")
+        return self.getDataColumnHTML("patient_payment")
 
     def getOfficialPrices(self):
-        return self.getData("official_price")
+        return self.getDataColumnHTML("official_price")
 
     def getWholesalePrices(self):
-        return self.getData("wholesale_price")
+        return self.getDataColumnHTML("wholesale_price")
 
     def getRetailPrices(self):
-        return self.getData("retail_price")
+        return self.getDataColumnHTML("retail_price")
 
     def getRefundLimits(self):
-        return self.getData("refund_limit")
+        return self.getDataColumnHTML("refund_limit")
 
+    def getData(self,attr):
+        return set([getattr(x, attr) for x in Drug.objects.filter(key=self).order_by("date")])
 
 class Drug(models.Model):
     objects = DrugManager()
