@@ -53,20 +53,20 @@ class DrugFilterSet(filters.FilterSet):
 
 
 class DrugKeyTable(tables.Table):
-    activeSubstances = tables.TemplateColumn("{{ record.getActiveSubstances }}",attrs={"td":{"style":"height:100%"}})
-    dates = tables.TemplateColumn("{{ record.getDates }}",attrs={"td":{"style":"height:100%"}})
-    medNames = tables.TemplateColumn("{{ record.getMedNames }}",attrs={"td":{"style":"height:100%"}})
-    medForms = tables.TemplateColumn("{{ record.getMedForms }}",attrs={"td":{"style":"height:100%"}})
-    doses = tables.TemplateColumn("{{ record.getDoses }}",attrs={"td":{"style":"height:100%"}})
-    companyNames = tables.TemplateColumn("{{ record.getCompanyNames }}",attrs={"td":{"style":"height:100%"}})
-    packSizes = tables.TemplateColumn("{{ record.getPackSizes }}",attrs={"td":{"style":"height:100%"}})
-    limitGroups = tables.TemplateColumn("{{ record.getLimitGroups }}",attrs={"td":{"style":"height:100%"}})
-    paymentLvls = tables.TemplateColumn("{{ record.getPaymentLvls }}",attrs={"td":{"style":"height:100%"}})
-    patientPayments = tables.TemplateColumn("{{ record.getPatientPayments }}",attrs={"td":{"style":"height:100%"}})
-    officialPrices = tables.TemplateColumn("{{ record.getOfficialPrices }}",attrs={"td":{"style":"height:100%"}})
-    wholesalePrices = tables.TemplateColumn("{{ record.getWholesalePrices }}",attrs={"td":{"style":"height:100%"}})
-    retailPrices = tables.TemplateColumn("{{ record.getRetailPrices }}",attrs={"td":{"style":"height:100%"}})
-    refundLimits = tables.TemplateColumn("{{ record.getRefundLimits }}",attrs={"td":{"style":"height:100%"}})
+    activeSubstances = tables.TemplateColumn("{{ record.getActiveSubstances }}",attrs={"td":{"style":"height:0"}})
+    dates = tables.TemplateColumn("{{ record.getDates }}",attrs={"td":{"style":"height:0"}})
+    medNames = tables.TemplateColumn("{{ record.getMedNames }}",attrs={"td":{"style":"height:0"}})
+    medForms = tables.TemplateColumn("{{ record.getMedForms }}",attrs={"td":{"style":"height:0"}})
+    doses = tables.TemplateColumn("{{ record.getDoses }}",attrs={"td":{"style":"height:0"}})
+    companyNames = tables.TemplateColumn("{{ record.getCompanyNames }}",attrs={"td":{"style":"height:0"}})
+    packSizes = tables.TemplateColumn("{{ record.getPackSizes }}",attrs={"td":{"style":"height:0"}})
+    limitGroups = tables.TemplateColumn("{{ record.getLimitGroups }}",attrs={"td":{"style":"height:0"}})
+    paymentLvls = tables.TemplateColumn("{{ record.getPaymentLvls }}",attrs={"td":{"style":"height:0"}})
+    patientPayments = tables.TemplateColumn("{{ record.getPatientPayments }}",attrs={"td":{"style":"height:0"}})
+    officialPrices = tables.TemplateColumn("{{ record.getOfficialPrices }}",attrs={"td":{"style":"height:0"}})
+    wholesalePrices = tables.TemplateColumn("{{ record.getWholesalePrices }}",attrs={"td":{"style":"height:0"}})
+    retailPrices = tables.TemplateColumn("{{ record.getRetailPrices }}",attrs={"td":{"style":"height:0"}})
+    refundLimits = tables.TemplateColumn("{{ record.getRefundLimits }}",attrs={"td":{"style":"height:0"}})
 
 
     class Meta:
